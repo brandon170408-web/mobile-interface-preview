@@ -595,11 +595,12 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
   #app .nav,#motion-backdrop .nav{
     align-items:end;
     height:max(44px,12.6cqw);
-    padding-block:0 1px;
+    padding-block:0;
   }
   #app .nav :is(button,a),#motion-backdrop .nav :is(button,a){
     min-height:44px;
     align-content:end;
+    grid-template-rows:5.7cqw 3.08cqw;
   }
 }
 @media (display-mode:standalone){
@@ -613,7 +614,7 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
   #app,#motion-backdrop,.notification-layer{inset:env(safe-area-inset-top) env(safe-area-inset-right) var(--bottom-reserve) env(safe-area-inset-left)}
   #app .nav,#motion-backdrop .nav{
     /* Put the buttons near the home indicator independently of content padding. */
-    bottom:calc(-1 * max(min(18px,var(--bottom-reserve)), min(26px,calc(var(--bottom-reserve) - 8px))));
+    bottom:calc(-1 * max(min(18px,var(--bottom-reserve)), min(26px,calc(var(--bottom-reserve) - 8px)), min(33px,calc(var(--bottom-reserve) - max(3px,calc(14px - var(--unavailable-bottom,0px)))))));
   }
   .tab-intro{height:var(--app-height)}
   .phone .tab-stage{--feed-start:calc(var(--app-height) * .574)}
