@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Mobile Interface Preview",
+  "short_name": "Mobile Preview",
+  "start_url": "./?app=1",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020305",
+  "theme_color": "#020305",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
