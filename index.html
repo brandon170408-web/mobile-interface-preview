@@ -620,6 +620,13 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
   .phone .personal-home .tab-stage{--feed-start:calc(var(--app-height) * .576)}
   .phone .crypto .tab-stage{--feed-start:calc(var(--app-height) * .5735)}
   .phone .rewards .tab-stage{--feed-start:calc(var(--app-height) * .57)}
+  html:has(.phone:not(.junior-detail):is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))),body:has(.phone:not(.junior-detail):is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))){background-color:#201e32}
+  .phone:not(.junior-detail):is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))::after{
+    content:"";position:absolute;inset:auto 0 0;height:var(--bottom-reserve);
+    background:#201e32;pointer-events:none;
+  }
+  html:has(.phone.junior-detail),body:has(.phone.junior-detail){background-color:#050405}
+  html:has(#app .receipt),body:has(#app .receipt){background-color:#0e0e19}
 }
 html,body,.phone,.phone .tab-scroll,.phone .wallet-spin{touch-action:pan-y}
 @media (pointer:coarse){
@@ -1955,6 +1962,16 @@ if(typeof setInterval==='function')setInterval(refreshMarket,1000);
 })();
 </script><script>(() => {
   if(navigator.standalone!==true&&!matchMedia('(display-mode:standalone)').matches)return;
+  const theme=document.querySelector('meta[name="theme-color"][media="(display-mode: standalone)"]');
+  const app=document.querySelector('#app');
+  if(theme&&app){
+    const updateTheme=()=>{theme.content=getComputedStyle(document.documentElement).backgroundColor};
+    const observer=new MutationObserver(updateTheme);
+    observer.observe(app,{childList:true,subtree:true});
+    observer.observe(app.parentElement,{attributes:true,attributeFilter:['class']});
+    window.addEventListener('hashchange',updateTheme);
+    updateTheme();
+  }
   const phone=document.querySelector('.phone');
   if(!phone)return;
   function alignFooter(){
