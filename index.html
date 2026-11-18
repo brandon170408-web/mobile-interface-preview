@@ -592,16 +592,17 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
   html,body{width:100%;height:100%;min-height:0;overflow:hidden}
   body{display:block}
   .phone,.phone:has(.personal-home){position:fixed;inset:0;width:100%;height:100dvh;max-width:none;max-height:none;aspect-ratio:auto;border-radius:0;container-type:size}
-  #app,#motion-backdrop,.notification-layer{inset:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-  .phone{--app-height:calc(100cqh - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
+  .phone{--bottom-reserve:env(safe-area-inset-bottom);--app-height:calc(100cqh - env(safe-area-inset-top) - var(--bottom-reserve))}
+  .phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target))){--bottom-reserve:max(0px,calc(env(safe-area-inset-bottom) - var(--unavailable-bottom,0px)))}
+  html:has(.phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))),body:has(.phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))){background:#201e32}
+  #app,#motion-backdrop,.notification-layer{inset:env(safe-area-inset-top) env(safe-area-inset-right) var(--bottom-reserve) env(safe-area-inset-left)}
   .tab-intro{height:var(--app-height)}
   .phone .tab-stage{--feed-start:calc(var(--app-height) * .574)}
   .phone .personal-home .tab-stage{--feed-start:calc(var(--app-height) * .576)}
   .phone .crypto .tab-stage{--feed-start:calc(var(--app-height) * .5735)}
   .phone .rewards .tab-stage{--feed-start:calc(var(--app-height) * .57)}
-  .phone:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav)::after,
-  .phone:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target))::after{
-    content:"";position:absolute;inset:auto 0 0;height:env(safe-area-inset-bottom);background:#201e32;pointer-events:none;
+  .phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))::after{
+    content:"";position:absolute;inset:auto 0 0;height:var(--bottom-reserve);background:#201e32;pointer-events:none;
   }
 }
 html,body,.phone,.phone .tab-scroll,.phone .wallet-spin{touch-action:pan-y}
@@ -1886,6 +1887,20 @@ if(typeof setInterval==='function')setInterval(refreshMarket,1000);
     location.hash='home';
   });
 })();
+</script><script>(() => {
+  if(navigator.standalone!==true||!/iPhone/.test(navigator.userAgent))return;
+  const phone=document.querySelector('.phone');
+  if(!phone)return;
+  function alignFooter(){
+    const {width,height}=phone.getBoundingClientRect();
+    const missing=Math.round(screen.height-height);
+    // Some standalone iPhone viewports end before the physical screen edge.
+    const inset=screen.height>screen.width&&Math.abs(screen.width-width)<2&&missing>0&&missing<=80?missing:0;
+    phone.style.setProperty('--unavailable-bottom',inset+'px');
+  }
+  alignFooter();
+  window.addEventListener('resize',alignFooter);
+  window.addEventListener('pageshow',alignFooter);
 </script><script>(() => {
   const phone=document.querySelector('.phone');
   if(!phone)return;
