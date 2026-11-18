@@ -613,7 +613,7 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
   #app,#motion-backdrop,.notification-layer{inset:env(safe-area-inset-top) env(safe-area-inset-right) var(--bottom-reserve) env(safe-area-inset-left)}
   #app .nav,#motion-backdrop .nav{
     /* Put the buttons near the home indicator independently of content padding. */
-    bottom:calc(-1 * min(18px,var(--bottom-reserve)));
+    bottom:calc(-1 * max(min(18px,var(--bottom-reserve)), min(26px,calc(var(--bottom-reserve) - 8px))));
   }
   .tab-intro{height:var(--app-height)}
   .phone .tab-stage{--feed-start:calc(var(--app-height) * .574)}
