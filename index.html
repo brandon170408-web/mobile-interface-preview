@@ -588,10 +588,14 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
 .nav a{padding:1.3cqw 0;display:grid;justify-items:center;gap:.5cqw;font-size:2.3cqw;color:#acb9df;font-weight:650}
 .nav a.selected{background:radial-gradient(ellipse,#183268,#0f1e3e 68%,transparent);color:#e1e9ff;border-radius:4cqw}
 
+@media (max-width:600px) and (pointer:coarse){
+  .phone,.phone:has(.personal-home){width:100%;height:100dvh;aspect-ratio:auto;border-radius:0}
+}
 @media (display-mode:standalone), (max-width:600px) and (pointer:coarse){
   #app .nav,#motion-backdrop .nav{
     align-items:end;
-    padding-block:0 3px;
+    height:max(44px,12.6cqw);
+    padding-block:0 1px;
   }
   #app .nav :is(button,a),#motion-backdrop .nav :is(button,a){
     min-height:44px;
@@ -607,6 +611,10 @@ button:active:not(.row){scale:.93;filter:brightness(1.2)}button{transition:scale
   .phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target))){--bottom-reserve:max(0px,calc(env(safe-area-inset-bottom) - var(--unavailable-bottom,0px)))}
   html:has(.phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))),body:has(.phone:is(:has(#app > section:not(.fallback-view) .nav,#app > .fallback-view:target .nav),:has(#app > .fallback-view:last-child .nav):not(:has(.fallback-view:target)))){background:#201e32}
   #app,#motion-backdrop,.notification-layer{inset:env(safe-area-inset-top) env(safe-area-inset-right) var(--bottom-reserve) env(safe-area-inset-left)}
+  #app .nav,#motion-backdrop .nav{
+    /* Put the buttons near the home indicator independently of content padding. */
+    bottom:calc(-1 * min(18px,var(--bottom-reserve)));
+  }
   .tab-intro{height:var(--app-height)}
   .phone .tab-stage{--feed-start:calc(var(--app-height) * .574)}
   .phone .personal-home .tab-stage{--feed-start:calc(var(--app-height) * .576)}
@@ -1949,12 +1957,12 @@ if(typeof setInterval==='function')setInterval(refreshMarket,1000);
   });
 })();
 </script><script>(() => {
-  if(navigator.standalone!==true||!/iPhone/.test(navigator.userAgent))return;
+  if(navigator.standalone!==true&&!matchMedia('(display-mode:standalone)').matches)return;
   const phone=document.querySelector('.phone');
   if(!phone)return;
   function alignFooter(){
     const {width,height}=phone.getBoundingClientRect();
-    const missing=Math.round(screen.height-height);
+    const missing=Math.round(screen.height-Math.min(height,window.innerHeight||height));
     // Some standalone iPhone viewports end before the physical screen edge.
     const inset=screen.height>screen.width&&Math.abs(screen.width-width)<2&&missing>0&&missing<=80?missing:0;
     phone.style.setProperty('--unavailable-bottom',inset+'px');
