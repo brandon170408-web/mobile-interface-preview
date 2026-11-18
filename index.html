@@ -634,8 +634,7 @@ html,body,.phone,.phone .tab-scroll,.phone .wallet-spin{touch-action:pan-y}
 }
 #app .empty-profile-photo{display:inline-block;border-radius:50%;background:#29324b;}
 .receipt{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;overflow:auto;padding:5cqw;background:radial-gradient(ellipse at top,#232343,#0e0e19 62%);color:#faf9ff}
-.receipt-top{display:flex;justify-content:space-between;align-items:center;gap:4cqw;color:#c7bdf6;font-size:3.4cqw}
-.receipt-top strong{color:#8d8ba8}
+.receipt-top{display:flex;justify-content:flex-end;align-items:center;gap:4cqw;color:#c7bdf6;font-size:3.4cqw}
 .receipt-close{width:10cqw;height:10cqw;border-radius:50%;background:#ffffff14;color:inherit;font-size:6cqw;line-height:1}
 .receipt-hero{margin:6cqw 0;padding:5cqw 0;border-bottom:1px solid #ffffff20}
 .receipt-hero h1{font-size:8.8cqw;line-height:1.05;margin:2cqw 0;overflow-wrap:anywhere}
@@ -953,7 +952,7 @@ function receiptMarkup(entry){
   const format=cents=>new Intl.NumberFormat('en-GB',{style:'currency',currency:entry.currency}).format(cents/100);
   const recipient=escapeText(entry.handle?'@'+entry.handle.replace(/^@/,''):entry.recipient);
   const amount=format(entry.cents);
-  return '<section class="receipt" aria-label="Simulated payment receipt"><div class="receipt-top"><strong>Simulated payment</strong><button type="button" class="receipt-close" data-go="receipt-home" aria-label="Close receipt">×</button></div><div class="receipt-hero"><span class="receipt-check" aria-hidden="true">✓</span><p>Payment sent</p><h1>'+amount+'</h1><p>To '+recipient+'</p></div><dl class="receipt-details"><div><dt>Recipient</dt><dd>'+recipient+'</dd></div><div><dt>Amount</dt><dd>'+amount+'</dd></div><div><dt>Fee</dt><dd>'+format(0)+'</dd></div><div><dt>Total</dt><dd><strong>'+amount+'</strong></dd></div><div><dt>Reference</dt><dd>'+entry.reference+'</dd></div></dl><button type="button" class="receipt-done" data-go="receipt-home">Done</button></section>';
+  return '<section class="receipt" aria-label="Simulated payment receipt"><div class="receipt-top"><button type="button" class="receipt-close" data-go="receipt-home" aria-label="Close receipt">×</button></div><div class="receipt-hero"><span class="receipt-check" aria-hidden="true">✓</span><p>Test payment sent</p><h1>'+amount+'</h1><p>To '+recipient+'</p></div><dl class="receipt-details"><div><dt>Recipient</dt><dd>'+recipient+'</dd></div><div><dt>Amount</dt><dd>'+amount+'</dd></div><div><dt>Fee</dt><dd>'+format(0)+'</dd></div><div><dt>Total</dt><dd><strong>'+amount+'</strong></dd></div><div><dt>Reference</dt><dd>'+entry.reference+'</dd></div></dl><button type="button" class="receipt-done" data-go="receipt-home">Done</button></section>';
 }
 let completedPayment;
 globalThis.previewReceipt={reference:receiptReference,markup:receiptMarkup};
